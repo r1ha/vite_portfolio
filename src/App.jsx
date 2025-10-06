@@ -1,8 +1,7 @@
 import './App.css';
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home.jsx';
-import Portfolio from './pages/Portfolio.jsx';
-import Galerie from './pages/Galerie.jsx';
+import Gallery from './pages/Gallery.jsx';
 import Blog from './pages/Blog.jsx';
 
 /**
@@ -15,8 +14,7 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/galerie" element={<Galerie />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/blog" element={<Blog />} />
       </Routes>
     </HashRouter>

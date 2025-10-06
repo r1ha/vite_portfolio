@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { Scene } from '../components/Scene'
@@ -19,7 +19,20 @@ function Home(){
 
     const sections = ["Blog", "Gallery", "About"]
     const [selection, setSelection] = useState([false, false, false])
+    const [confusion, setConfusion] = useState(false)
+    const [hoveredZone, setHoveredZone] = useState(null)
+    const navigate = useNavigate()
 
+    useEffect(() => {
+        if (!selection || !Array.isArray(selection)) return
+        const idx = selection.findIndex(Boolean)
+        if (idx === -1) return
+        // map index -> path
+        const path = idx === 0 ? '/blog' : idx === 1 ? '/galerie' : '/portfolio'
+        navigate(path)
+        // reset selection after navigation
+        setSelection([false, false, false])
+    }, [selection, navigate])
 
     useEffect(() => {
         function onMove(e){
@@ -30,10 +43,32 @@ function Home(){
             setMouse({ x: nx, y: ny })
         }
 
+        function onTouch(e){
+            if (!e.touches || e.touches.length === 0) return
+            const t = e.touches[0]
+            const w = window.innerWidth
+            const h = window.innerHeight
+            const nx = (t.clientX / w) * 2 - 1
+            const ny = (t.clientY / h) * 2 - 1
+            setMouse({ x: nx, y: ny })
+        }
+
+        function onTouchEnd(){
+            // move pointer outside so hover leaves zones
+            setMouse({ x: 10, y: 10 })
+        }
+
         window.addEventListener('mousemove', onMove)
-        return () => window.removeEventListener('mousemove', onMove)
-        
-    }, [mouse])
+        window.addEventListener('touchstart', onTouch)
+        window.addEventListener('touchmove', onTouch)
+        window.addEventListener('touchend', onTouchEnd)
+        return () => {
+            window.removeEventListener('mousemove', onMove)
+            window.removeEventListener('touchstart', onTouch)
+            window.removeEventListener('touchmove', onTouch)
+            window.removeEventListener('touchend', onTouchEnd)
+        }
+    }, [])
 
     // trigger welcome fade-in on mount
     useEffect(() => {
@@ -90,12 +125,14 @@ function Home(){
             <div className="flex flex-col items-center gap-4 z-10">
 
                 <h1
-                    className={`text-5xl text-neutral-800 transition-opacity duration-[${transitionDuration}s] ease-in-out ${visible ? 'opacity-100' : 'opacity-0'}`}
-                    style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300 }}
+                    className={`text-5xl text-neutral-800 transition-opacity ease-in-out ${visible ? 'opacity-100' : 'opacity-0'}`}
+                    style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300, transition: `opacity ${transitionDuration}s ease-in-out` }}
                 >
                     {langs[langIndex]}
                 </h1>
                 <SoundButton />
+                {/* navigation is automatic on confirmed selection; no visible button */}
+                <h2 className={`text-sm text-neutral-800 transition-opacity duration-[${transitionDuration}s] ease-in-out ${confusion ? 'opacity-100' : 'opacity-0'} italic`}>Move your mouse around to explore</h2>
 
                 <span className={`loading bg-neutral-800 loading-ring loading-xl ${loading ? 'block' : 'hidden'}`} aria-hidden="true"></span>
             </div>
@@ -121,9 +158,9 @@ function Home(){
                         mouse={mouse}
                         sections={sections} // example prop to show how to pass data to Scene component
                         setSelection={setSelection}
-                    >
-
-                    </Scene>
+                        setConfusion={setConfusion}
+                        setHoveredZone={setHoveredZone}
+                    />
 
                 </Canvas>
             </div>
