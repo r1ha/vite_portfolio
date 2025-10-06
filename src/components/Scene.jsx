@@ -68,7 +68,7 @@ function useSmoothCamera(camera, mouse) {
 
 export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion, setHoveredZone}) => {
   // use absolute paths so Vite serves files from public/
-  const gltf = useGLTF('/models/scene.glb')
+  const gltf = useGLTF('./models/scene.glb')
   const scene = gltf?.scene
 
   // Prepare GLTF meshes (shadows etc.)
@@ -220,7 +220,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
           <Html position={[-10, 5, 5]} rotation={[0, Math.PI / 2, 0]} center transform occlude>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <img
-                src="/icons/pen.svg"
+                src="./icons/pen.svg"
                 alt="pen"
                 style={{
                   width: 64,
@@ -283,7 +283,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
         
       )}
 
-      <Environment files="/hdris/citrus_orchard_puresky_4k.hdr" />
+      <Environment files="./hdris/citrus_orchard_puresky_4k.hdr" />
 
       {/* Directional light & environment for basic realism */}
       <directionalLight

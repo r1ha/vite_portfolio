@@ -48,7 +48,7 @@ export default function SoundButton() {
         )}
       </button>
 
-      <audio ref={audioRef} src="/audio/birds.mp3" playsInline />
+      <audio ref={audioRef} src="./audio/birds.mp3" playsInline />
     </div>
   )
 }
