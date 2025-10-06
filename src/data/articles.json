@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "category": "Statistics",
+    "title": "Site analytics overview",
+    "text": "This article explains how we collect and visualize site statistics. It contains charts and examples of metrics like visits, bounce rate, and session duration."
+  },
+  {
+    "id": 2,
+    "category": "Other",
+    "title": "Design notes",
+    "text": "Short notes about design decisions, color palettes and typography used across the portfolio."
+  }
+]
