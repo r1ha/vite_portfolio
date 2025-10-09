@@ -13,7 +13,7 @@ export default function Blog(){
         .filter(a => a.title.toLowerCase().includes(query.trim().toLowerCase()))
 
     return (
-        <div className="min-h-screen text-black bg-white p-8">
+        <div className="min-h-screen text-black p-8">
             <div className="max-w-4xl mx-auto">
                 {/* Header: stacks on small screens, row on sm+ */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
@@ -24,7 +24,7 @@ export default function Blog(){
                 <div className="mb-4">
                     <input
                         aria-label="Search articles by title"
-                        className="w-full max-w-lg px-3 py-2 border border-gray-200 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-300"
+                        className="w-full max-w-lg px-3 py-2 bg-gray-50 border border-gray-200 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-300"
                         placeholder="Search by title..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}

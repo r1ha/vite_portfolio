@@ -1,7 +1,65 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { Environment, useGLTF, Html } from '@react-three/drei'
 import { useEffect, useRef, useState } from 'react'
+import useScrollProgress from '../hooks/useScrollProgress'
 import * as THREE from 'three'
+import { element } from 'three/tsl'
+
+function ScrollPillarAnimation(pillar1, pillar2, progress){
+
+  if (!pillar1 || !pillar2) return
+
+    useEffect(() => {
+
+      // Progressive translation of pillars based on scroll progress
+      pillar1.position.y = -progress * 20 + 20
+      pillar2.position.y = progress * 20 - 20
+
+      // Progressive rotation of pillars based on scroll progress
+      pillar1.rotation.y = progress * 5
+      pillar2.rotation.y = -progress * 5
+      
+
+      // Progressive opacity increase based on scroll progress
+      pillar1.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = progress // fades in quickly
+        }
+      })
+
+      pillar2.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = progress // fades in quickly
+        }
+      })
+
+    }, [progress, pillar1, pillar2])
+}
+
+function cubeOpacity(progress) {
+  if (progress < scrollLimit) return 1
+  return Math.max(0, (1 - 5 * (progress - scrollLimit))) // fades OUT quickly
+}
+
+function ScrollCubeAnimation(cube, progress){
+
+  if (!cube) return
+
+    useEffect(() => {
+
+      // Progressive fade out after scroll limit
+
+      cube.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = cubeOpacity(progress)
+        }
+      })
+
+    }, [progress, cube])
+}
 
 const zoneRadius = 0.6
 const confusionRadius = 0.3
@@ -31,9 +89,10 @@ function isInZone3(x, y) {
     else return false
 }
 
+const scrollLimit = 0.2
 
+function useSmoothCamera(camera, mouse, progress) {
 
-function useSmoothCamera(camera, mouse) {
   const sphericalRef = useRef({
     theta: Math.PI / 4,
     phi: Math.PI / 4
@@ -42,52 +101,107 @@ function useSmoothCamera(camera, mouse) {
   useFrame((state, delta) => {
     if (!camera) return
 
-    // Rayon constant
+    // Consistent radius
     const radius = camera.position.length()
 
-    // Cibles angulaires à partir de la souris
-    const targetTheta = -mouse.x * Math.PI / 4 + Math.PI / 4
-    const targetPhi = mouse.y * Math.PI / 4 + Math.PI / 4
+    let targetTheta, targetPhi
 
-    // Interpolation des angles (au lieu des positions)
+    if (progress < scrollLimit)
+    {
+
+      // Target angles from mouse
+      targetTheta = -mouse.x * Math.PI / 4 + Math.PI / 4
+      targetPhi = mouse.y * Math.PI / 4 + Math.PI / 4
+    
+    }
+    else
+    {
+      // Scroll exceeded: reset to default angle
+      
+      targetTheta = Math.PI / 4
+      targetPhi = 0
+    }
+
+    // Interpolation of angles
     const lerpSpeed = 6
     const t = 1 - Math.exp(-lerpSpeed * delta)
     sphericalRef.current.theta += (targetTheta - sphericalRef.current.theta) * t
     sphericalRef.current.phi += (targetPhi - sphericalRef.current.phi) * t
 
-    // Conversion sphérique → cartésien
+    // Sphjerical to Cartesian
     const { theta, phi } = sphericalRef.current
     const x = radius * Math.sin(theta) * Math.cos(phi)
     const y = radius * Math.sin(phi)
     const z = radius * Math.cos(theta) * Math.cos(phi)
 
     camera.position.set(x, y, z)
+
     camera.lookAt(0, 0, 0)
   })
 }
 
-export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion, setHoveredZone}) => {
+export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion, setHoveredZone, sceneRef}) => {
   // use absolute paths so Vite serves files from public/
-  const gltf = useGLTF('./models/scene.glb')
-  const scene = gltf?.scene
+  const scene = new THREE.Scene()
+
+  const cube_gltf = useGLTF('./models/cube.glb')
+  const cube = cube_gltf?.scene
+  
+  const pillar1_gltf = useGLTF('./models/pillar1.glb')
+  const pillar2_gltf = useGLTF('./models/pillar2.glb')
+
+  const pillar1 = pillar1_gltf?.scene
+  const pillar2 = pillar2_gltf?.scene
+
+  const progress = useScrollProgress()
 
   // Prepare GLTF meshes (shadows etc.)
   useEffect(() => {
-    if (!scene) return
+    if (!cube) return
     setLoading(false)
 
-    scene.traverse((obj) => {
+    // prepare scene meshes
+    cube.traverse((obj) => {
       if (obj.isMesh) {
         obj.castShadow = true
         obj.receiveShadow = true
       }
     })
-  }, [scene, setLoading])
+    try {
+        scene.add(cube)
+      } catch (e) {
+        console.warn('Error adding cube to scene:', e)
+      }
+
+    for (const pillar of [pillar1, pillar2]) {
+
+      if (!pillar) continue
+
+      pillar.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true
+          obj.receiveShadow = true
+        }
+      })
+
+      try {
+        scene.add(pillar)
+      } catch (e) {
+        console.warn('Error adding pillar to scene:', e)
+      }
+    }
+
+    pillar1.position.set(8, -30, 8) // adjust as needed
+    pillar2.position.set(-8, 30, -8) // adjust as needed
+
+  }, [scene, cube, pillar1, pillar2, setLoading, sceneRef])
 
   // Log camera coordinates when OrbitControls change the camera
   const { camera } = useThree()
 
-  useSmoothCamera(camera, mouse)
+  useSmoothCamera(camera, mouse, progress)
+  ScrollPillarAnimation(pillar1, pillar2, progress)
+  ScrollCubeAnimation(cube, progress)
 
   useEffect(() => {
 
@@ -110,7 +224,9 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
   const hoverTimerRef = useRef(null)
   const currentHoverRef = useRef(null)
 
-  function detectZone(x, y) {
+  function detectZone(x, y, progress) {
+
+    if (progress >= scrollLimit) return null
     if (isInZone1(x, y)) return 0
     if (isInZone2(x, y)) return 1
     if (isInZone3(x, y)) return 2
@@ -141,6 +257,18 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
   const maxBlurPx = 6      // maximum blur in px when far
 
   function iconProximityStyle(index) {
+    // If the scroll progress has reached the limit, skip proximity math
+    // and make icons invisible (fast path).
+    if (progress > scrollLimit) {
+      const blurPx = maxBlurPx
+      return {
+        opacity: (1 - progress)**2/10,
+        filter: `blur(${blurPx}px)`,
+        WebkitFilter: `blur(${blurPx}px)`,
+        transition: 'opacity 300ms cubic-bezier(.2,.9,.2,1), filter 300ms cubic-bezier(.2,.9,.2,1)'
+      }
+    }
+
     const mx = (mouse && typeof mouse.x === 'number') ? mouse.x : 0
     const my = (mouse && typeof mouse.y === 'number') ? mouse.y : 0
     const c = iconCenters[index]
@@ -165,7 +293,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
   }
 
   useEffect(() => {
-    const zone = detectZone(mouse.x, mouse.y)
+    const zone = detectZone(mouse.x, mouse.y, progress)
 
     // notify immediate hover change
     if (setHoveredZone) setHoveredZone(zone)
@@ -209,7 +337,8 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
                 fontWeight: 300,
                 color: hoveredLocal === 0 ? '#ffffff' : '#111827',
                 textShadow: hoveredLocal === 0 ? '0 0 10px rgba(255,255,255,0.85)' : 'none',
-                transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out'
+                transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out',
+                opacity: cubeOpacity(progress)
               }}
             >
               {sections[0]}
@@ -239,7 +368,8 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
               fontWeight: 300,
               color: hoveredLocal === 1 ? '#ffffff' : '#111827',
               textShadow: hoveredLocal === 1 ? '0 0 10px rgba(255,255,255,0.85)' : 'none',
-              transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out'
+              transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out',
+              opacity: cubeOpacity(progress)
             }}
             >
               {sections[1]}
@@ -263,7 +393,8 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
               fontWeight: 300,
               color: hoveredLocal === 2 ? '#ffffff' : '#111827',
               textShadow: hoveredLocal === 2 ? '0 0 10px rgba(255,255,255,0.85)' : 'none',
-              transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out'
+              transition: 'color 0.25s ease-out, text-shadow 0.5s ease-out',
+              opacity: cubeOpacity(progress)
             }}
             >
               {sections[2]}
@@ -272,10 +403,16 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
           
           {/* Section 3 icon */}
           <Html position={[5, -10, 5]} rotation={[Math.PI/2, Math.PI, -3*Math.PI/4]} center transform occlude>
-            <div className='text-black text-5xl'
-              style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, ...iconProximityStyle(2) }}
-            >
-              me
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img
+                src="./icons/down_arrow.svg"
+                alt="pen"
+                style={{
+                  width: 64,
+                  height: 64,
+                  ...iconProximityStyle(2)
+                }}
+              />
             </div>
           </Html>
         </>

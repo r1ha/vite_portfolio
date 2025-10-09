@@ -1,9 +1,30 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-html, body, #root {
-    background: #e8eaec;
-    color: #ffffff;
-    width: 100%;
-    height: 100%;
+/* Base variables and site-wide styles applied at the root level.
+     We define a few CSS variables on :root so it's easy to tweak the base
+     colors, then apply a subtle radial gradient and readable text color to
+     the document root (html/body/#root). */
+@layer base {
+    :root {
+        --site-bg: #e8eaec;
+        --site-bg-mid: #c1c4c6;
+        --site-bg-dark: #a3a5a5;
+        --site-text: #111827;
+    }
+
+    /* global page wrapper */
+    html, body, #root {
+        /* font smoothing for better rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+    /* radial gradient with two colors: light center -> darker outer */
+    background: radial-gradient(circle at 50% 30%, var(--site-bg) 0%, var(--site-bg-mid) 70%, var(--site-bg-dark) 100%), var(--site-bg);
+    }
+
+    /* small helpers for consistent typography across the app */
+    body {
+        line-height: 1.5;
+    }
 }

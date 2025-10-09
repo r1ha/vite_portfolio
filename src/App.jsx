@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home.jsx';
 import Gallery from './pages/Gallery.jsx';
 import Blog from './pages/Blog.jsx';
-import About from './pages/About.jsx';
+import CurriculumVitae from './components/CurriculumVitae.jsx';
 
 /**
  * App root
@@ -17,7 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/blog" element={<Blog />} />
-  <Route path="/about" element={<About />} />
+        <Route path="/test" element={<CurriculumVitae />} />
       </Routes>
     </HashRouter>
   );

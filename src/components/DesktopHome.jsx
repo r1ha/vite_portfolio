@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
+import { useRef, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Canvas } from '@react-three/fiber'
 import { Scene } from './Scene'
 import * as THREE from 'three'
 import SoundButton from './SoundButton'
+import CurriculumVitae from './CurriculumVitae'
 
 function DesktopHome(){
 
@@ -16,6 +16,7 @@ function DesktopHome(){
     const transitionDuration = 3 // s
     const [soundOn, setSoundOn] = useState(true)
     const audioRef = useRef(null)
+    const sceneRef = useRef(null)
 
     const sections = ["Blog", "Gallery", "About"]
     const [selection, setSelection] = useState([false, false, false])
@@ -28,7 +29,7 @@ function DesktopHome(){
         const idx = selection.findIndex(Boolean)
         if (idx === -1) return
         // map index -> path
-        const path = idx === 0 ? '/blog' : idx === 1 ? '/gallery' : '/about'
+        const path = idx === 0 ? '/blog' : idx === 1 ? '/gallery' : '/'
         navigate(path)
         // reset selection after navigation
         setSelection([false, false, false])
@@ -120,9 +121,9 @@ function DesktopHome(){
     
     return(
 
-        <div className="relative flex flex-col items-center w-full h-screen gap-4 p-4 m-4 overflow-hidden">
+        <div className="relative z-10 flex flex-col items-center gap-200 p-4 m-4 overflow-hidden">
 
-            <div className="flex flex-col items-center gap-4 z-10">
+            <div className="flex flex-col items-center gap-5 z-10">
 
                 <h1
                     className={`text-5xl text-neutral-800 transition-opacity ease-in-out ${visible ? 'opacity-100' : 'opacity-0'}`}
@@ -135,9 +136,10 @@ function DesktopHome(){
                 <h2 className={`text-sm text-neutral-800 transition-opacity duration-[3s] ease-in-out ${confusion ? 'opacity-100' : 'opacity-0'} italic`}>Move your mouse around to explore</h2>
 
                 <span className={`loading bg-neutral-800 loading-ring loading-xl ${loading ? 'block' : 'hidden'}`} aria-hidden="true"></span>
+
             </div>
 
-            <div className={`absolute inset-0 z-0 transition-opacity duration-[${transitionDuration}s] ease-in-out ${loading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`fixed inset-0 -z-10 transition-opacity duration-[${transitionDuration}s] ease-in-out ${loading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
 
                 {/* Three.js Canvas as background */}
                 <Canvas
@@ -160,10 +162,14 @@ function DesktopHome(){
                         setSelection={setSelection}
                         setConfusion={setConfusion}
                         setHoveredZone={setHoveredZone}
+                        sceneRef={sceneRef}
                     />
 
                 </Canvas>
             </div>
+
+            <CurriculumVitae />
+
 
         </div>
     )
