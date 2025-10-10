@@ -10,7 +10,8 @@ const COMMON = {
 		{ id: 'p1', tags: ['pymupdf', 'ollama', 'openai api'], image: './pictures/pdf_translation.png' },
 		{ id: 'p2', tags: ['pandas', 'scikit-learn'], image: './pictures/machine_learning.png' },
 		{ id: 'p3', tags: ['js', 'open layers', 'spring boot', 'react', 'sql', 'figma', 'jira'], image: './pictures/pin_it.png' },
-		{ id: 'p4', tags: ['arduino', 'c++'], image: './pictures/directional_sound_level_meter.png' }
+		{ id: 'p4', tags: ['arduino', 'c++'], image: './pictures/directional_sound_level_meter.png' },
+		{ id: 'p5', tags: ['javascript','react','tailwindcss','three','blender'], image: './pictures/portfolio.png' }
 	],
 	skills: [
 		{ id: 'js', src: './icons/javascript.svg', defaultLabel: 'JavaScript' },
@@ -51,6 +52,10 @@ const DICT = {
 			p4: {
 				title: "Conception et prototypage d'un appareil de mesure du niveau sonore directionnel",
 				subtitle: "Extraction et analyse des signaux de 3 microphones analogiques avec ESP32, transmission via WebSocket et visualisations temps réel sur écran cylindrique"
+			},
+			p5: {
+				title: "Création d'un portfolio",
+				subtitle: "J'ai réalisé ce petit portfolio pour me présenter. Pour une expérience plus riche, utiliser un ordinateur..."
 			}
 		},
 		skillsLabels: {
@@ -63,6 +68,13 @@ const DICT = {
 		},
 		skillsTitle: 'Compétences',
 		timelineTitle: 'Expériences Professionnelles & Formation',
+			interestsTitle: 'Centres d\'intérêt',
+			interests: [
+				'Sports : Musculation, course, escalade',
+				'Chant : membre de la MuSa Polyphonic Choir à la Sapienza',
+				'Tutorat scientifique avec les lycéens',
+				'Tous les arts créatifs'
+			],
 		timelineItems: [
 			{ id: 1, year: '2026', title: "Diplôme d'Ingénieur en Ingénierie Informatique et Mathématique", subtitle: 'Polytech Paris-Saclay' },
 			{ id: 2, year: '2025', title: "Semestre Erasmus : Master en Informatique", subtitle: 'Sapienza Università di Roma' },
@@ -98,6 +110,10 @@ const DICT = {
 			p4: {
 				title: 'Design & Prototyping of a Directional Sound Level Meter',
 				subtitle: 'Signal extraction and analysis from 3 analog microphones with ESP32, data transmission via WebSocket and real-time visualizations on a cylindrical display'
+			},
+			p5: {
+				title: 'Portfolio creation',
+				subtitle: 'I built this small portfolio to introduce myself. For a richer experience, use a desktop computer...'
 			}
 		},
 		skillsLabels: {
@@ -105,6 +121,13 @@ const DICT = {
 		},
 		skillsTitle: 'Skills',
 		timelineTitle: 'Experience & Education',
+			interestsTitle: 'Interests',
+			interests: [
+				'Sports: Weight training, running, climbing',
+				'Singing: member of the MuSa Polyphonic Choir at Sapienza',
+				'Science tutoring with high-school students',
+				'All creative arts'
+			],
 		timelineItems: [
 			{ id: 1, year: '2026', title: 'Engineering Degree in Computer Science & Mathematics', subtitle: 'Polytech Paris-Saclay' },
 			{ id: 2, year: '2025', title: 'Erasmus Semester: Master in Computer Science', subtitle: 'Sapienza Università di Roma' },
@@ -128,11 +151,19 @@ const DICT = {
 			p1: { title: 'Traduzione di PDF con IA generativa', subtitle: 'Uso flessibile di SLM e LLM, elaborazione sequenziale del documento, traduzione a pezzi e ricostruzione del PDF preservando stili e layout' },
 			p2: { title: 'Classificazione di immagini alimentari', subtitle: "Approccio di Machine Learning, selezione delle feature e valutazione delle prestazioni" },
 			p3: { title: 'Sviluppo dell’app PinIt', subtitle: 'Sviluppo in team di un mini social network di viaggio: pin (foto & diario), visibilità configurabile, ricerca text-to-coords, assistente di viaggio e gestione sicura degli accessi' },
-			p4: { title: "Progettazione e prototipazione di un misuratore di livello sonoro direzionale", subtitle: "Estrazione e analisi dei segnali da 3 microfoni analogici con ESP32, trasmissione tramite WebSocket e visualizzazioni in tempo reale su display cilindrico" }
+			p4: { title: "Progettazione e prototipazione di un misuratore di livello sonoro direzionale", subtitle: "Estrazione e analisi dei segnali da 3 microfoni analogici con ESP32, trasmissione tramite WebSocket e visualizzazioni in tempo reale su display cilindrico" },
+			p5: { title: 'Creazione di un portfolio', subtitle: "Ho realizzato questo piccolo portfolio per presentarmi. Per un'esperienza più ricca, usare un computer..." }
 		},
 		skillsLabels: { js: 'JavaScript', cpp: 'C++', arduino: 'Arduino', git: 'Git', sql: 'SQL', python: 'Python' },
 		skillsTitle: 'Competenze',
 		timelineTitle: 'Esperienza & Formazione',
+			interestsTitle: 'Interessi',
+			interests: [
+				'Sport: allenamento con i pesi, corsa, arrampicata',
+				'Canto: membro del MuSa Polyphonic Choir alla Sapienza',
+				'Tutoraggio scientifico con studenti delle superiori',
+				'Tutte le arti creative'
+			],
 		timelineItems: [
 			{ id: 1, year: '2026', title: "Laurea d'Ingegneria in Informatica e Matematica", subtitle: 'Polytech Paris-Saclay' },
 			{ id: 2, year: '2025', title: 'Semestre Erasmus: Master in Informatica', subtitle: 'Sapienza Università di Roma' },
@@ -156,11 +187,19 @@ const DICT = {
 			p1: { title: '使用生成式AI的PDF翻译', subtitle: '灵活使用SLM与LLM，按序处理文档，分块翻译并重建PDF，同时保留样式和布局' },
 			p2: { title: '食物图像分类', subtitle: '机器学习方法，特征选择与性能评估' },
 			p3: { title: 'PinIt 应用开发', subtitle: '团队开发的旅行迷你社交网络：添加 pin（照片 & 日志）、可配置可见性、文本到坐标搜索、旅行助手及安全的访问管理' },
-			p4: { title: '定向声级计的设计与原型', subtitle: '使用 ESP32 对 3 个模拟麦克风信号进行提取与分析，通过 WebSocket 传输数据并在圆柱形显示屏上进行实时可视化' }
+			p4: { title: '定向声级计的设计与原型', subtitle: '使用 ESP32 对 3 个模拟麦克风信号进行提取与分析，通过 WebSocket 传输数据并在圆柱形显示屏上进行实时可视化' },
+			p5: { title: '作品集创建', subtitle: '我制作了这个小型作品集来介绍自己。为了获得更丰富的体验，请使用台式电脑...' }
 		},
 		skillsLabels: { js: 'JavaScript', cpp: 'C++', arduino: 'Arduino', git: 'Git', sql: 'SQL', python: 'Python' },
 		skillsTitle: '技能',
 		timelineTitle: '经历与教育',
+			interestsTitle: '兴趣',
+			interests: [
+				'运动：力量训练、跑步、攀岩',
+				'唱歌：Sapienza 的 MuSa 多声合唱团成员',
+				'与高中生的科学辅导',
+				'所有创意艺术'
+			],
 		timelineItems: [
 			{ id: 1, year: '2026', title: '计算机与数学工程学位', subtitle: 'Polytech Paris-Saclay' },
 			{ id: 2, year: '2025', title: 'Erasmus 学期：计算机科学硕士', subtitle: 'Sapienza Università di Roma' },
@@ -224,8 +263,19 @@ export default function CurriculumVitae({ initialLang = 'en' }){
 				<section className="grid grid-cols-1 sm:grid-cols-3 gap-12 items-start">
 											<div className="col-span-1 flex flex-col items-center space-y-4">
 												<img src="./pictures/profile.jpg" alt="profile" className="w-40 h-40 rounded-full object-cover shadow-sm border" />
-																		<h2 className="mt-4 text-3xl font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif' }}>{t.profileName}</h2>
-																		<div className="mt-2 text-sm text-neutral-600 text-center">{t.profileSubtitle}</div>
+
+												<h2 className="mt-4 text-3xl font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif' }}>{t.profileName}</h2>
+														<div className="mt-2 text-sm text-neutral-600 text-center">{t.profileSubtitle}</div>
+
+												{/* Social links under profile texts */}
+												<div className="flex items-center gap-4 mt-3 justify-center">
+													<a href="https://www.linkedin.com/in/erwan-achat-069311233" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="inline-flex items-center justify-center rounded-full transition-transform duration-200 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-neutral-300">
+														<img src="./icons/linkedin.svg" alt="LinkedIn" className="w-7 h-7" />
+													</a>
+													<a href="https://github.com/r1ha/vite_portfolio" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="inline-flex items-center justify-center rounded-full transition-transform duration-200 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-neutral-300">
+														<img src="./icons/github.svg" alt="GitHub" className="w-7 h-7" />
+													</a>
+												</div>
 					</div>
 
 					<div className="sm:col-span-2">
@@ -254,6 +304,18 @@ export default function CurriculumVitae({ initialLang = 'en' }){
 												))}
 							</div>
 						</div>
+						
+				{/* Interests */}
+				{t.interests && (
+					<div className="mt-8">
+						<h3 className="text-lg font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif', fontWeight: 300 }}>{t.interestsTitle}</h3>
+						<ul className="mt-3 list-disc list-inside text-sm text-neutral-700">
+							{t.interests.map((it, i) => (
+								<li key={i}>{it}</li>
+							))}
+						</ul>
+					</div>
+				)}
 
 					</div>
 				</section>
