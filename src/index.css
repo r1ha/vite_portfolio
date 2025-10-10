@@ -7,9 +7,8 @@
      the document root (html/body/#root). */
 @layer base {
     :root {
-        --site-bg: #e8eaec;
-        --site-bg-mid: #c1c4c6;
-        --site-bg-dark: #a3a5a5;
+        --site-bg: #ebeef2;
+        --site-bg-dark: #e4eee7;
         --site-text: #111827;
     }
 
@@ -20,7 +19,7 @@
         -moz-osx-font-smoothing: grayscale;
 
     /* radial gradient with two colors: light center -> darker outer */
-    background: radial-gradient(circle at 50% 30%, var(--site-bg) 0%, var(--site-bg-mid) 70%, var(--site-bg-dark) 100%), var(--site-bg);
+    background: radial-gradient(circle at 50% 30%, var(--site-bg) 0%, var(--site-bg-dark) 100%), var(--site-bg);
     }
 
     /* small helpers for consistent typography across the app */

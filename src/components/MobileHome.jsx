@@ -21,7 +21,7 @@ export default function MobileHome(){
   }, [])
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-6 gap-6">
+    <div className="min-h-screen flex flex-col items-center justify-star p-6 gap-6">
       <div className="w-full max-w-sm text-center">
 
         <div className="flex justify-center">

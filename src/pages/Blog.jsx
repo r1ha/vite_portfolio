@@ -70,7 +70,9 @@ export default function Blog(){
                         {filtered.map(a => (
                             <article key={a.id} className="mb-4 p-6 bg-gray-50 shadow-sm border border-gray-100 rounded-lg">
                                 <div className="text-xs text-neutral-500 mb-2">{a.category}</div>
-                                <h4 className="font-semibold text-xl text-neutral-800">{a.title}</h4>
+                                <h4 className="font-semibold text-xl text-neutral-800">
+                                    <Link to={`/article/${a.id}`} className="hover:underline">{a.title}</Link>
+                                </h4>
                                 <p className="mt-3 text-sm text-neutral-700 whitespace-pre-line">{a.text}</p>
                             </article>
                         ))}

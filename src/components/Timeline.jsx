@@ -6,7 +6,7 @@ export default function Timeline({ items = [] }){
     <div className="mt-4">
       <div className="relative">
         {/* vertical line for timeline */}
-        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-neutral-200 hidden sm:block" />
+        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-neutral-400 hidden sm:block" />
 
         <ul className="space-y-6 sm:pl-12">
           {items.map(item => (

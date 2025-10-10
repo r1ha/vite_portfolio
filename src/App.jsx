@@ -4,6 +4,7 @@ import Home from './pages/Home.jsx';
 import Gallery from './pages/Gallery.jsx';
 import Blog from './pages/Blog.jsx';
 import CurriculumVitae from './components/CurriculumVitae.jsx';
+import Article from './pages/Article.jsx';
 
 /**
  * App root
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/blog" element={<Blog />} />
+  <Route path="/article/:id" element={<Article />} />
         <Route path="/test" element={<CurriculumVitae />} />
       </Routes>
     </HashRouter>

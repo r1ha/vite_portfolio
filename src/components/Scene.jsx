@@ -7,7 +7,9 @@ import { element } from 'three/tsl'
 
 function ScrollPillarAnimation(pillar1, pillar2, progress){
 
-  if (!pillar1 || !pillar2) return
+  // #TODO: This is not solving the problem of transparent pillars
+
+  if (!pillar1 || !pillar2 || (progress == null)) return
 
     useEffect(() => {
 

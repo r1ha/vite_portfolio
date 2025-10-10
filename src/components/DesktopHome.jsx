@@ -133,7 +133,7 @@ function DesktopHome(){
                 </h1>
                 <SoundButton />
                 {/* navigation is automatic on confirmed selection; no visible button */}
-                <h2 className={`text-sm text-neutral-800 transition-opacity duration-[3s] ease-in-out ${confusion ? 'opacity-100' : 'opacity-0'} italic`}>Move your mouse around to explore</h2>
+                <h2 className={`text-sm text-neutral-800 transition-opacity duration-[3s] ease-in-out ${confusion ? 'opacity-100' : 'opacity-0'} italic`}>Move your mouse around to navigate and face one corner to select</h2>
 
                 <span className={`loading bg-neutral-800 loading-ring loading-xl ${loading ? 'block' : 'hidden'}`} aria-hidden="true"></span>
 
