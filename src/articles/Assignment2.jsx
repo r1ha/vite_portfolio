@@ -26,7 +26,7 @@ export const metadata = {
   author: "Erwan Achat",
   studentId: "2244316",
   date: "2025",
-  description: "Work in progress..."
+  description: "After exploring distributions, we will apply this knowledge to a fascinating problem: breaking encrypted messages. We'll use letter frequency analysis to decode Caesar ciphers, which is a classic example of how statistics can be used in cybersecurity."
 }
 
 export default function Assignment2() {
@@ -54,11 +54,19 @@ export default function Assignment2() {
         <p className="mb-6">
             
             In this assignment, I used a small dataset of american cereals I found on Kaggle, with various nutritional information.
-            Let's explore the distribution of calories per serving in the population of cereals...
         </p>
-        <a className="underline hover:no-underline" href="https://www.kaggle.com/datasets/crawford/80-cereals" target="_blank" rel="noopener noreferrer">
+
+        <p className="mb-6">
+            Here's a link to the dataset I used:
+        </p>
+
+        <a className="mb-6 underline hover:no-underline" href="https://www.kaggle.com/datasets/crawford/80-cereals" target="_blank" rel="noopener noreferrer">
         Kaggle cereal dataset
         </a>
+
+        <p className="mt-6 mb-6">
+            Let's explore the distribution of calories per serving in the population of cereals...
+        </p>
 
         <CerealCaloriesChart />
 
@@ -67,6 +75,30 @@ export default function Assignment2() {
         </p>
 
         <BivariateHeatmapChart />
+
+        <h2 className="text-2xl font-semibold mt-12 mb-6">From Statistics to Cryptanalysis</h2>
+        
+        <p className="mb-6">
+          Now, let's try to decode an encrypted text using its distribution of letters. You can write a message in English to be encrypted in the the following text field:
+        </p>
+
+        <CaesarCipherDemo />
+
+        <p className="mb-6">
+          The key insight is that even when text is encrypted, the underlying letter frequencies remain distinctive to the language. 
+          English has characteristic patterns - 'E' is very common, 'Z' is rare. By comparing the frequency distribution of an encrypted text 
+          with known English letter frequencies, we can often determine the shift used.
+        </p>
+
+        <p className="mb-6">
+            Copy and paste your encrypted message below to break the code. 
+        </p>
+
+        <FrequencyAnalysisDemo />
+
+        <p className="mb-6">
+            So, this means we have to think of more complex ways than Julius Caesaer to secure our messages.
+        </p>
 
       </div>
     </article>
@@ -206,11 +238,11 @@ function CerealCaloriesChart() {
   return (
     <div className="not-prose my-8">
       <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <h3 className="text-lg font-semibold text-gray-900">
             Interactive Calories Distribution
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-center sm:justify-end">
             <span className="text-sm text-gray-600">Categories:</span>
             <button
               onClick={() => setCategories(Math.max(2, categories - 1))}
@@ -453,11 +485,11 @@ function BivariateHeatmapChart() {
   return (
     <div className="not-prose my-8">
       <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <h3 className="text-lg font-semibold text-gray-900">
             Bivariate Distribution: Calories vs Sugar Content
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-center sm:justify-end">
             <span className="text-sm text-gray-600">Grid Size:</span>
             <button
               onClick={() => setGridSize(Math.max(3, gridSize - 1))}
@@ -501,6 +533,320 @@ function BivariateHeatmapChart() {
               <span>High frequency</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Caesar Cipher Demo Component
+function CaesarCipherDemo() {
+  const [text, setText] = useState("HELLO WORLD")
+  const [shift, setShift] = useState(3)
+
+  const encrypt = (text, shift) => {
+    return text.split('').map(char => {
+      if (char.match(/[A-Z]/)) {
+        return String.fromCharCode(((char.charCodeAt(0) - 65 + shift) % 26) + 65)
+      }
+      return char
+    }).join('')
+  }
+
+  const decrypt = (text, shift) => {
+    return encrypt(text, -shift)
+  }
+
+  const encryptedText = encrypt(text, shift)
+
+  return (
+    <div className="not-prose my-8">
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Caesar Cipher Demonstration
+          </h3>
+          <div className="flex items-center gap-2 justify-center sm:justify-end">
+            <span className="text-sm text-gray-600">Shift:</span>
+            <button
+              onClick={() => setShift(Math.max(1, shift - 1))}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-semibold transition-colors"
+            >
+              −
+            </button>
+            <span className="w-8 text-center text-sm font-semibold text-gray-800">
+              {shift}
+            </span>
+            <button
+              onClick={() => setShift(Math.min(25, shift + 1))}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-semibold transition-colors"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Original Text (uppercase letters only):
+            </label>
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value.toUpperCase().replace(/[^A-Z\s]/g, ''))}
+              className="w-full p-3 border border-gray-300 rounded-lg font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter text to encrypt..."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <h4 className="font-semibold text-red-800 mb-2">🔒 Encrypted</h4>
+              <div className="font-mono text-lg text-red-700 break-all">
+                {encryptedText || "Enter text above"}
+              </div>
+            </div>
+
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h4 className="font-semibold text-green-800 mb-2">🔓 Decrypted (known shift)</h4>
+              <div className="font-mono text-lg text-green-700 break-all">
+                {decrypt(encryptedText, shift) || "Enter text above"}
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+            <p className="mb-2">
+              <strong>How it works:</strong> Each letter is shifted by {shift} positions in the alphabet.
+            </p>
+            <p>
+              Example: A→{String.fromCharCode(((0 + shift) % 26) + 65)}, 
+              B→{String.fromCharCode(((1 + shift) % 26) + 65)}, 
+              C→{String.fromCharCode(((2 + shift) % 26) + 65)}...
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Frequency Analysis Demo Component
+function FrequencyAnalysisDemo() {
+  const [encryptedText, setEncryptedText] = useState("WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ")
+  const [guessedShift, setGuessedShift] = useState(0)
+
+  // English letter frequencies (approximate percentages)
+  const englishFreq = {
+    'A': 8.2, 'B': 1.5, 'C': 2.8, 'D': 4.3, 'E': 12.7, 'F': 2.2, 'G': 2.0, 'H': 6.1,
+    'I': 7.0, 'J': 0.15, 'K': 0.77, 'L': 4.0, 'M': 2.4, 'N': 6.7, 'O': 7.5, 'P': 1.9,
+    'Q': 0.095, 'R': 6.0, 'S': 6.3, 'T': 9.1, 'U': 2.8, 'V': 0.98, 'W': 2.4, 'X': 0.15,
+    'Y': 2.0, 'Z': 0.074
+  }
+
+  const calculateFrequencies = (text) => {
+    const letters = text.replace(/[^A-Z]/g, '')
+    const counts = {}
+    const total = letters.length
+
+    // Initialize all letters
+    for (let i = 65; i <= 90; i++) {
+      counts[String.fromCharCode(i)] = 0
+    }
+
+    // Count letters
+    for (let char of letters) {
+      counts[char]++
+    }
+
+    // Convert to percentages
+    const frequencies = {}
+    for (let letter in counts) {
+      frequencies[letter] = total > 0 ? (counts[letter] / total) * 100 : 0
+    }
+
+    return frequencies
+  }
+
+  const decrypt = (text, shift) => {
+    return text.split('').map(char => {
+      if (char.match(/[A-Z]/)) {
+        return String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65)
+      }
+      return char
+    }).join('')
+  }
+
+  const decryptedText = decrypt(encryptedText, guessedShift)
+  const textFreq = calculateFrequencies(encryptedText)
+
+  // Calculate chi-squared statistic for current shift
+  const calculateChiSquared = (shift) => {
+    const testText = decrypt(encryptedText, shift)
+    const testFreq = calculateFrequencies(testText)
+    
+    let chiSquared = 0
+    for (let letter in englishFreq) {
+      const expected = englishFreq[letter]
+      const observed = testFreq[letter]
+      chiSquared += Math.pow(observed - expected, 2) / expected
+    }
+    return chiSquared
+  }
+
+  // Find best shift (lowest chi-squared)
+  const findBestShift = () => {
+    let bestShift = 0
+    let bestScore = Infinity
+    
+    for (let shift = 0; shift < 26; shift++) {
+      const score = calculateChiSquared(shift)
+      if (score < bestScore) {
+        bestScore = score
+        bestShift = shift
+      }
+    }
+    return bestShift
+  }
+
+  const bestShift = findBestShift()
+
+  return (
+    <div className="not-prose my-8">
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Frequency Analysis Decoder
+          </h3>
+          <div className="flex items-center gap-2 justify-center sm:justify-end">
+            <span className="text-sm text-gray-600">Try Shift:</span>
+            <button
+              onClick={() => setGuessedShift(Math.max(0, guessedShift - 1))}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-semibold transition-colors"
+            >
+              −
+            </button>
+            <span className="w-8 text-center text-sm font-semibold text-gray-800">
+              {guessedShift}
+            </span>
+            <button
+              onClick={() => setGuessedShift(Math.min(25, guessedShift + 1))}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-semibold transition-colors"
+            >
+              +
+            </button>
+            <button
+              onClick={() => setGuessedShift(bestShift)}
+              className="ml-2 px-3 py-1 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Auto-solve
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Encrypted Message:
+            </label>
+            <input
+              type="text"
+              value={encryptedText}
+              onChange={(e) => setEncryptedText(e.target.value.toUpperCase().replace(/[^A-Z\s]/g, ''))}
+              className="w-full p-3 border border-gray-300 rounded-lg font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3">Letter Frequency Comparison</h4>
+              <div className="h-64 overflow-y-auto">
+                <FrequencyChart 
+                  englishFreq={englishFreq} 
+                  textFreq={calculateFrequencies(decryptedText)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Decrypted Attempt (Shift {guessedShift})</h4>
+                <div className="font-mono text-lg text-blue-700 break-all">
+                  {decryptedText}
+                </div>
+                <div className="text-sm text-blue-600 mt-2">
+                  Chi-squared score: {calculateChiSquared(guessedShift).toFixed(2)}
+                  {guessedShift === bestShift && " Best match!"}
+                </div>
+              </div>
+
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <h4 className="font-semibold text-green-800 mb-2">Statistical Best Guess</h4>
+                <div className="font-mono text-lg text-green-700 break-all">
+                  {decrypt(encryptedText, bestShift)}
+                </div>
+                <div className="text-sm text-green-600 mt-2">
+                  Detected shift: {bestShift} (score: {calculateChiSquared(bestShift).toFixed(2)})
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+            <p className="mb-2">
+              <strong>How frequency analysis works:</strong> We compare the letter frequencies in the decrypted text 
+              with typical English frequencies. The shift that produces the closest match is likely correct.
+            </p>
+            <p>
+              The chi-squared test measures how well the frequencies match - lower scores indicate better matches.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Simple frequency comparison chart
+function FrequencyChart({ englishFreq, textFreq }) {
+  const letters = Object.keys(englishFreq).sort()
+
+  return (
+    <div className="space-y-1">
+      {letters.map(letter => (
+        <div key={letter} className="flex items-center gap-2 text-sm">
+          <span className="w-4 font-mono font-bold">{letter}</span>
+          <div className="flex-1 flex gap-1">
+            <div className="flex-1 bg-gray-200 rounded h-4 relative">
+              <div 
+                className="bg-blue-400 h-full rounded" 
+                style={{ width: `${(englishFreq[letter] / 15) * 100}%` }}
+              />
+              <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-700">
+                {englishFreq[letter].toFixed(1)}%
+              </span>
+            </div>
+            <div className="flex-1 bg-gray-200 rounded h-4 relative">
+              <div 
+                className="bg-red-400 h-full rounded" 
+                style={{ width: `${(textFreq[letter] / 15) * 100}%` }}
+              />
+              <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-700">
+                {textFreq[letter].toFixed(1)}%
+              </span>
+            </div>
+          </div>
+        </div>
+      ))}
+      <div className="flex gap-2 text-xs text-gray-600 mt-2">
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 bg-blue-400 rounded"></div>
+          <span>English</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 bg-red-400 rounded"></div>
+          <span>Your text</span>
         </div>
       </div>
     </div>

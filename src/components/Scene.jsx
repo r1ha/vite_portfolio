@@ -154,8 +154,8 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
       }
     }
 
-    pillar1.position.set(8, -30, 8) // adjust as needed
-    pillar2.position.set(-8, 30, -8) // adjust as needed
+    pillar1.position.set(4, -15, 5) // adjust as needed
+    pillar2.position.set(-6, 15, -5) // adjust as needed
     
     preparedRef.current = true
 
@@ -175,8 +175,8 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
     // Pillar animations
     if (pillar1 && pillar2 && progress != null) {
       // Progressive translation of pillars based on scroll progress
-      pillar1.position.y = -progress * 20 + 20
-      pillar2.position.y = progress * 20 - 20
+      pillar1.position.y = progress * 15 - 15
+      pillar2.position.y = -progress * 10 + 15
 
       // Progressive rotation of pillars based on scroll progress
       pillar1.rotation.y = progress * 5
