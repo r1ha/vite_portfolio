@@ -76,10 +76,10 @@ const DICT = {
 				'Tous les arts créatifs'
 			],
 		timelineItems: [
-			{ id: 1, year: '2026', title: "Diplôme d'Ingénieur en Ingénierie Informatique et Mathématique", subtitle: 'Polytech Paris-Saclay' },
-			{ id: 2, year: '2025', title: "Semestre Erasmus : Master en Informatique", subtitle: 'Sapienza Università di Roma' },
-			{ id: 3, year: '2025', title: "Obtention de la certification TOEIC en Anglais", subtitle: 'Anglais niveau C1' },
-			{ id: 4, year: '2025', title: "Stage de recherche dans la visualisation de données (6 mois)", subtitle: "INRIA : équipe Aviz" }
+			{ id: 1, year: '2026', title: "Diplôme d'Ingénieur en Ingénierie Informatique et Mathématique", subtitle: 'Polytech Paris-Saclay', icon: './icons/polytech.svg' },
+			{ id: 2, year: '2025', title: "Semestre Erasmus : Master en Informatique", subtitle: 'Sapienza Università di Roma', icon: './icons/sapienza.svg' },
+			{ id: 3, year: '2025', title: "Obtention de la certification TOEIC en Anglais", subtitle: 'Anglais niveau C1', icon: './icons/toeic.svg' },
+			{ id: 4, year: '2025', title: "Stage de recherche dans la visualisation de données (6 mois)", subtitle: "INRIA : équipe Aviz", icon: './icons/inria.svg' }
 		]
 	},
 
@@ -129,10 +129,10 @@ const DICT = {
 				'All creative arts'
 			],
 		timelineItems: [
-			{ id: 1, year: '2026', title: 'Engineering Degree in Computer Science & Mathematics', subtitle: 'Polytech Paris-Saclay' },
-			{ id: 2, year: '2025', title: 'Erasmus Semester: Master in Computer Science', subtitle: 'Sapienza Università di Roma' },
-			{ id: 3, year: '2025', title: 'TOEIC Certification (English)', subtitle: 'English level C1' },
-			{ id: 4, year: '2025', title: 'Research Internship in Data Visualization (6 months)', subtitle: 'INRIA : Aviz team' }
+			{ id: 1, year: '2026', title: 'Engineering Degree in Computer Science & Mathematics', subtitle: 'Polytech Paris-Saclay', icon: './icons/polytech.svg' },
+			{ id: 2, year: '2025', title: 'Erasmus Semester: Master in Computer Science', subtitle: 'Sapienza Università di Roma', icon: './icons/sapienza.svg' },
+			{ id: 3, year: '2025', title: 'TOEIC Certification (English)', subtitle: 'English level C1', icon: './icons/toeic.svg' },
+			{ id: 4, year: '2025', title: 'Research Internship in Data Visualization (6 months)', subtitle: 'INRIA : Aviz team', icon: './icons/inria.svg' }
 		]
 	},
 
@@ -165,10 +165,10 @@ const DICT = {
 				'Tutte le arti creative'
 			],
 		timelineItems: [
-			{ id: 1, year: '2026', title: "Laurea d'Ingegneria in Informatica e Matematica", subtitle: 'Polytech Paris-Saclay' },
-			{ id: 2, year: '2025', title: 'Semestre Erasmus: Master in Informatica', subtitle: 'Sapienza Università di Roma' },
-			{ id: 3, year: '2025', title: 'Certificazione TOEIC (Inglese)', subtitle: 'Inglese livello C1' },
-			{ id: 4, year: '2025', title: 'Tirocinio di ricerca in visualizzazione dei dati (6 mesi)', subtitle: 'INRIA : team Aviz' }
+			{ id: 1, year: '2026', title: "Laurea d'Ingegneria in Informatica e Matematica", subtitle: 'Polytech Paris-Saclay', icon: './icons/polytech.svg' },
+			{ id: 2, year: '2025', title: 'Semestre Erasmus: Master in Informatica', subtitle: 'Sapienza Università di Roma', icon: './icons/sapienza.svg' },
+			{ id: 3, year: '2025', title: 'Certificazione TOEIC (Inglese)', subtitle: 'Inglese livello C1', icon: './icons/toeic.svg' },
+			{ id: 4, year: '2025', title: 'Tirocinio di ricerca in visualizzazione dei dati (6 mesi)', subtitle: 'INRIA : team Aviz', icon: './icons/inria.svg' }
 		]
 	},
 
@@ -201,10 +201,10 @@ const DICT = {
 				'所有创意艺术'
 			],
 		timelineItems: [
-			{ id: 1, year: '2026', title: '计算机与数学工程学位', subtitle: 'Polytech Paris-Saclay' },
-			{ id: 2, year: '2025', title: 'Erasmus 学期：计算机科学硕士', subtitle: 'Sapienza Università di Roma' },
-			{ id: 3, year: '2025', title: 'TOEIC 证书（英语）', subtitle: '英语水平 C1' },
-			{ id: 4, year: '2025', title: '数据可视化研究实习（6 个月）', subtitle: 'INRIA : Aviz 团队' }
+			{ id: 1, year: '2026', title: '计算机与数学工程学位', subtitle: 'Polytech Paris-Saclay', icon: './icons/polytech.svg' },
+			{ id: 2, year: '2025', title: 'Erasmus 学期：计算机科学硕士', subtitle: 'Sapienza Università di Roma', icon: './icons/sapienza.svg' },
+			{ id: 3, year: '2025', title: 'TOEIC 证书（英语）', subtitle: '英语水平 C1', icon: './icons/toeic.svg' },
+			{ id: 4, year: '2025', title: '数据可视化研究实习（6 个月）', subtitle: 'INRIA : Aviz 团队', icon: './icons/inria.svg' }
 		]
 	}
 }

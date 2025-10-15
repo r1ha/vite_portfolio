@@ -5,63 +5,14 @@ import useScrollProgress from '../hooks/useScrollProgress'
 import * as THREE from 'three'
 import { element } from 'three/tsl'
 
-function ScrollPillarAnimation(pillar1, pillar2, progress){
-
-  // #TODO: This is not solving the problem of transparent pillars
-
-  if (!pillar1 || !pillar2 || (progress == null)) return
-
-    useEffect(() => {
-
-      // Progressive translation of pillars based on scroll progress
-      pillar1.position.y = -progress * 20 + 20
-      pillar2.position.y = progress * 20 - 20
-
-      // Progressive rotation of pillars based on scroll progress
-      pillar1.rotation.y = progress * 5
-      pillar2.rotation.y = -progress * 5
-      
-
-      // Progressive opacity increase based on scroll progress
-      pillar1.traverse((obj) => {
-        if (obj.isMesh) {
-          obj.material.transparent = true
-          obj.material.opacity = progress // fades in quickly
-        }
-      })
-
-      pillar2.traverse((obj) => {
-        if (obj.isMesh) {
-          obj.material.transparent = true
-          obj.material.opacity = progress // fades in quickly
-        }
-      })
-
-    }, [progress, pillar1, pillar2])
-}
+// Move animation logic to be called from within the component
 
 function cubeOpacity(progress) {
   if (progress < scrollLimit) return 1
   return Math.max(0, (1 - 5 * (progress - scrollLimit))) // fades OUT quickly
 }
 
-function ScrollCubeAnimation(cube, progress){
-
-  if (!cube) return
-
-    useEffect(() => {
-
-      // Progressive fade out after scroll limit
-
-      cube.traverse((obj) => {
-        if (obj.isMesh) {
-          obj.material.transparent = true
-          obj.material.opacity = cubeOpacity(progress)
-        }
-      })
-
-    }, [progress, cube])
-}
+// Move animation logic to be called from within the component
 
 const zoneRadius = 0.6
 const confusionRadius = 0.3
@@ -144,22 +95,35 @@ function useSmoothCamera(camera, mouse, progress) {
 
 export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion, setHoveredZone, sceneRef}) => {
   // use absolute paths so Vite serves files from public/
-  const scene = new THREE.Scene()
+  const sceneRef_local = useRef(new THREE.Scene())
+  const scene = sceneRef_local.current
 
   const cube_gltf = useGLTF('./models/cube.glb')
-  const cube = cube_gltf?.scene
+  const cubeRef = useRef(null)
   
   const pillar1_gltf = useGLTF('./models/pillar1.glb')
   const pillar2_gltf = useGLTF('./models/pillar2.glb')
 
-  const pillar1 = pillar1_gltf?.scene
-  const pillar2 = pillar2_gltf?.scene
+  const pillar1Ref = useRef(null)
+  const pillar2Ref = useRef(null)
+  const preparedRef = useRef(false)
 
   const progress = useScrollProgress()
 
-  // Prepare GLTF meshes (shadows etc.)
+  // Prepare GLTF meshes (shadows etc.) - only once
   useEffect(() => {
-    if (!cube) return
+    if (preparedRef.current) return
+    
+    const cube = cube_gltf?.scene?.clone()
+    const pillar1 = pillar1_gltf?.scene?.clone()
+    const pillar2 = pillar2_gltf?.scene?.clone()
+    
+    if (!cube || !pillar1 || !pillar2) return
+    
+    cubeRef.current = cube
+    pillar1Ref.current = pillar1
+    pillar2Ref.current = pillar2
+    
     setLoading(false)
 
     // prepare scene meshes
@@ -176,9 +140,6 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
       }
 
     for (const pillar of [pillar1, pillar2]) {
-
-      if (!pillar) continue
-
       pillar.traverse((obj) => {
         if (obj.isMesh) {
           obj.castShadow = true
@@ -195,15 +156,58 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
 
     pillar1.position.set(8, -30, 8) // adjust as needed
     pillar2.position.set(-8, 30, -8) // adjust as needed
+    
+    preparedRef.current = true
 
-  }, [scene, cube, pillar1, pillar2, setLoading, sceneRef])
+  }, [cube_gltf, pillar1_gltf, pillar2_gltf, scene, setLoading])
 
   // Log camera coordinates when OrbitControls change the camera
   const { camera } = useThree()
 
   useSmoothCamera(camera, mouse, progress)
-  ScrollPillarAnimation(pillar1, pillar2, progress)
-  ScrollCubeAnimation(cube, progress)
+  
+  // Handle pillar and cube animations
+  useFrame(() => {
+    const pillar1 = pillar1Ref.current
+    const pillar2 = pillar2Ref.current
+    const cube = cubeRef.current
+    
+    // Pillar animations
+    if (pillar1 && pillar2 && progress != null) {
+      // Progressive translation of pillars based on scroll progress
+      pillar1.position.y = -progress * 20 + 20
+      pillar2.position.y = progress * 20 - 20
+
+      // Progressive rotation of pillars based on scroll progress
+      pillar1.rotation.y = progress * 5
+      pillar2.rotation.y = -progress * 5
+
+      // Progressive opacity increase based on scroll progress
+      pillar1.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = progress
+        }
+      })
+
+      pillar2.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = progress
+        }
+      })
+    }
+    
+    // Cube animation
+    if (cube) {
+      cube.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.material.transparent = true
+          obj.material.opacity = cubeOpacity(progress)
+        }
+      })
+    }
+  })
 
   useEffect(() => {
 

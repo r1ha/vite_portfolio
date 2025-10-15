@@ -11,11 +11,21 @@ export default function Timeline({ items = [] }){
         <ul className="space-y-6 sm:pl-12">
           {items.map(item => (
             <li key={item.id} className="relative">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <div className="flex-shrink-0">
                   <div className="w-8 h-8 text-black flex items-center justify-center text-sm">{item.year}</div>
                 </div>
-                <div>
+                <div className="flex-1">
+                  {item.icon && (
+                    <div className="mb-1 flex justify-start">
+                      <img 
+                        src={item.icon} 
+                        alt="" 
+                        className="w-1/4 object-contain"
+                        style={{ filter: 'grayscale(1)' }}
+                      />
+                    </div>
+                  )}
                   <div className="text-sm font-semibold">{item.title}</div>
                   {item.subtitle && <div className="text-xs text-neutral-600 mt-1">{item.subtitle}</div>}
                 </div>

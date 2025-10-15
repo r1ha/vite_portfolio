@@ -1,23 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import articlesData from '../data/articles.json'
+import { getAllArticles, getCategories, getArticlesByCategory, searchArticles } from '../articles'
 
 export default function Blog(){
-    const [articles] = useState(articlesData)
     const [category, setCategory] = useState('All')
     const [query, setQuery] = useState('')
+    
+    const allArticles = getAllArticles()
+    const categories = getCategories()
 
-    // combine category filter and search query (title)
-    const filtered = articles
-        .filter(a => category === 'All' ? true : a.category === category)
-        .filter(a => a.title.toLowerCase().includes(query.trim().toLowerCase()))
+    // combine category filter and search query
+    const filtered = useMemo(() => {
+        let results = getArticlesByCategory(category)
+        if (query.trim()) {
+            const searchTerm = query.toLowerCase().trim()
+            results = results.filter(article => 
+                article.metadata.title.toLowerCase().includes(searchTerm) ||
+                article.metadata.description.toLowerCase().includes(searchTerm)
+            )
+        }
+        return results
+    }, [category, query])
 
     return (
         <div className="min-h-screen text-black p-8">
             <div className="max-w-4xl mx-auto">
                 {/* Header: stacks on small screens, row on sm+ */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
-                    <h1 className="text-3xl font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300 }}>Blog</h1>
+                    <h1 className="text-5xl font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300 }}>Blog</h1>
                     <Link to="/" className="text-sm transition text-neutral-600 hover:text-black sm:ml-4">Back</Link>
                 </div>
 
@@ -55,9 +65,14 @@ export default function Blog(){
 
                             return (
                                 <>
-                                    <CategoryButton label="All" active={category==='All'} onClick={() => setCategory('All')} />
-                                    <CategoryButton label="Statistics" active={category==='Statistics'} onClick={() => setCategory('Statistics')} />
-                                    <CategoryButton label="Other" active={category==='Other'} onClick={() => setCategory('Other')} />
+                                    {categories.map(cat => (
+                                        <CategoryButton 
+                                            key={cat}
+                                            label={cat} 
+                                            active={category === cat} 
+                                            onClick={() => setCategory(cat)} 
+                                        />
+                                    ))}
                                 </>
                             )
                         })()
@@ -67,13 +82,36 @@ export default function Blog(){
                 <div className="mb-8 grid grid-cols-1 gap-6">
                     <div>
                         {filtered.length === 0 && <p className="text-sm text-neutral-500">No articles in this category.</p>}
-                        {filtered.map(a => (
-                            <article key={a.id} className="mb-4 p-6 bg-gray-50 shadow-sm border border-gray-100 rounded-lg">
-                                <div className="text-xs text-neutral-500 mb-2">{a.category}</div>
-                                <h4 className="font-semibold text-xl text-neutral-800">
-                                    <Link to={`/article/${a.id}`} className="hover:underline">{a.title}</Link>
+                        {filtered.map(article => (
+                            <article key={article.id} className="mb-6 p-6 bg-white shadow-sm border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div className="flex items-center gap-2 text-xs text-neutral-500 mb-3">
+                                    <span className="uppercase tracking-wide">{article.metadata.category}</span>
+                                    {article.metadata.date && (
+                                        <>
+                                            <span>•</span>
+                                            <span>{article.metadata.date}</span>
+                                        </>
+                                    )}
+                                </div>
+                                <h4 className="font-semibold text-xl text-neutral-800 mb-3">
+                                    <Link to={`/article/${article.id}`} className="hover:underline hover:text-neutral-600 transition-colors">
+                                        {article.metadata.title}
+                                    </Link>
                                 </h4>
-                                <p className="mt-3 text-sm text-neutral-700 whitespace-pre-line">{a.text}</p>
+                                {article.metadata.description && (
+                                    <p className="text-sm text-neutral-600 mb-4 leading-relaxed">{article.metadata.description}</p>
+                                )}
+                                <div className="flex items-center justify-between">
+                                    <div className="text-xs text-neutral-500">
+                                        By {article.metadata.author || 'Anonymous'}
+                                    </div>
+                                    <Link 
+                                        to={`/article/${article.id}`} 
+                                        className="text-sm text-neutral-700 hover:text-neutral-900 font-medium transition-colors"
+                                    >
+                                        Read more →
+                                    </Link>
+                                </div>
                             </article>
                         ))}
                     </div>
