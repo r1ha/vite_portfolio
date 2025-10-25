@@ -83,7 +83,7 @@ export default function Blog(){
                     <div>
                         {filtered.length === 0 && <p className="text-sm text-neutral-500">No articles in this category.</p>}
                         {filtered.map(article => (
-                            <article key={article.id} className="mb-6 p-6 bg-white shadow-sm border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                            <article key={article.id} className="mb-6 p-6 bg-white shadow-sm rounded-lg hover:shadow-md transition-shadow">
                                 <div className="flex items-center gap-2 text-xs text-neutral-500 mb-3">
                                     <span className="uppercase tracking-wide">{article.metadata.category}</span>
                                     {article.metadata.date && (

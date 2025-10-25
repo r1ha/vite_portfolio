@@ -23,7 +23,7 @@ export default function Article(){
   return (
     <div className="min-h-screen p-8 text-black">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow-lg border border-gray-200 rounded-xl p-8 my-8 hover:shadow-xl transition-shadow">
+        <div className="bg-white shadow-lg rounded-xl p-8 my-8 hover:shadow-xl transition-shadow">
           <div className="flex items-start justify-between mb-8">
             <Link to="/blog" className="text-sm text-neutral-600 hover:text-black transition-colors">
               ← Back to Blog

@@ -167,33 +167,53 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
   useSmoothCamera(camera, mouse, progress)
   
   // Handle pillar and cube animations
-  useFrame(() => {
+  useFrame((state) => {
     const pillar1 = pillar1Ref.current
     const pillar2 = pillar2Ref.current
     const cube = cubeRef.current
+    const time = state.clock.getElapsedTime()
     
     // Pillar animations
     if (pillar1 && pillar2 && progress != null) {
-      // Progressive translation of pillars based on scroll progress
-      pillar1.position.y = progress * 15 - 15
-      pillar2.position.y = -progress * 10 + 15
+      // Enhanced translation with curves and oscillations
+      const smoothProgress = progress * progress * (3 - 2 * progress) // Smooth step function
+      const wave1 = Math.sin(time * 0.5 + progress * 2) * 0.5
+      const wave2 = Math.cos(time * 0.3 + progress * 1.5) * 0.3
+      
+      // Pillar 1: Rises with gentle oscillation and slight spiral
+      pillar1.position.y = smoothProgress * 18 - 15 + wave1
+      pillar1.position.x = 8 + Math.sin(smoothProgress * Math.PI * 2) * 2
+      pillar1.position.z = 8 + Math.cos(smoothProgress * Math.PI * 2) * 1.5
+      
+      // Pillar 2: Descends with different pattern and counter-rotation
+      pillar2.position.y = -smoothProgress * 12 + 15 + wave2
+      pillar2.position.x = -8 + Math.cos(smoothProgress * Math.PI * 1.5) * 1.8
+      pillar2.position.z = -8 + Math.sin(smoothProgress * Math.PI * 1.5) * 2.2
 
-      // Progressive rotation of pillars based on scroll progress
-      pillar1.rotation.y = progress * 5
-      pillar2.rotation.y = -progress * 5
+      // Enhanced rotation with multiple axes and easing
+      pillar1.rotation.y = smoothProgress * 6 + Math.sin(time * 0.2) * 0.1
+      pillar1.rotation.x = Math.sin(smoothProgress * Math.PI) * 0.3
+      pillar1.rotation.z = Math.cos(smoothProgress * Math.PI * 0.5) * 0.2
+      
+      pillar2.rotation.y = -smoothProgress * 4 + Math.cos(time * 0.15) * 0.15
+      pillar2.rotation.x = -Math.cos(smoothProgress * Math.PI) * 0.25
+      pillar2.rotation.z = Math.sin(smoothProgress * Math.PI * 0.7) * 0.18
 
-      // Progressive opacity increase based on scroll progress
+      // Enhanced opacity with breathing effect
+      const breathe1 = 0.95 + Math.sin(time * 0.8) * 0.05
+      const breathe2 = 0.95 + Math.cos(time * 0.6) * 0.05
+      
       pillar1.traverse((obj) => {
         if (obj.isMesh) {
           obj.material.transparent = true
-          obj.material.opacity = progress
+          obj.material.opacity = Math.min(smoothProgress * breathe1, 1)
         }
       })
 
       pillar2.traverse((obj) => {
         if (obj.isMesh) {
           obj.material.transparent = true
-          obj.material.opacity = progress
+          obj.material.opacity = Math.min(smoothProgress * breathe2, 1)
         }
       })
     }
@@ -336,7 +356,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
           <primitive object={scene} rotation={[0, -Math.PI / 2, 0]} />
 
           {/* Section 1 full text */}
-          <Html position={[0.2, 1, 1.5]} rotation={[0, Math.PI / 2, 0]} center transform occlude>
+          <Html position={[0.2, 1.5, 1.5]} rotation={[0, Math.PI / 2, 0]} center transform occlude>
             <div className={`text-lg transition duration-500 ease-out`}
               style={{
                 fontFamily: '"Cormorant Garamond", serif, Georgia',
@@ -367,7 +387,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
           </Html>
 
           {/* Section 2 full text */}
-          <Html position={[1.5, 1, 0.2]} center transform occlude>
+          <Html position={[1.5, 1.5, 0.2]} center transform occlude>
             <div className={`text-lg transition duration-500 ease-out`}
             style={{
               fontFamily: '"Cormorant Garamond", serif, Georgia',
@@ -392,7 +412,7 @@ export const Scene = ({ setLoading, mouse, sections, setSelection, setConfusion,
           </Html>
 
           {/* Section 3 full text */}
-          <Html position={[1.5, 0.2, 1.5]} rotation={[Math.PI/2, Math.PI, -3*Math.PI/4]} center transform occlude>
+          <Html position={[1.5, 0.5, 1.5]} rotation={[Math.PI/2, Math.PI, -3*Math.PI/4]} center transform occlude>
             <div className={`text-lg transition duration-500 ease-out`}
             style={{
               fontFamily: '"Cormorant Garamond", serif, Georgia',

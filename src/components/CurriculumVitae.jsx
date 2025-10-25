@@ -239,9 +239,9 @@ export default function CurriculumVitae({ initialLang = 'en' }){
 	return (
 		<div className="min-h-screen p-6 text-neutral-900">
 		<div className="max-w-4xl mx-auto space-y-12">
-				<header className="flex items-center justify-between mb-6">
-					<h1 className="text-3xl" style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300 }}>{t.title}</h1>
-								<div className="flex items-center gap-2">
+				<header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+					<h1 className="text-2xl sm:text-3xl" style={{ fontFamily: '"Cormorant Garamond", serif, Georgia', fontWeight: 300 }}>{t.title}</h1>
+								<div className="flex items-center gap-2 justify-center sm:justify-end">
 									{/* modern segmented language pills */}
 									<div className="inline-flex bg-gray-100 rounded-full p-1 shadow-sm ring-1 ring-gray-100">
 										{['en','fr','it','zh'].map(code => (
@@ -308,7 +308,7 @@ export default function CurriculumVitae({ initialLang = 'en' }){
 				{/* Interests */}
 				{t.interests && (
 					<div className="mt-8">
-						<h3 className="text-lg font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif', fontWeight: 300 }}>{t.interestsTitle}</h3>
+						<h3 className="text-lg font-semibold" style={{ fontFamily: '"Cormorant Garamond", serif'}}>{t.interestsTitle}</h3>
 						<ul className="mt-3 list-disc list-inside text-sm text-neutral-700">
 							{t.interests.map((it, i) => (
 								<li key={i}>{it}</li>
