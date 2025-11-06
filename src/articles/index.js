@@ -1,6 +1,7 @@
 import Assignment1, { metadata as assignment1Meta } from './Assignment1'
 import Assignment2, { metadata as assignment2Meta } from './Assignment2'
 import Assignment3, { metadata as assignment3Meta } from './Assignment3'
+import Assignment4, { metadata as assignment4Meta } from './Assignment4'
 import Assignment5, { metadata as assignment5Meta } from './Assignment5'
 import Assignment6, { metadata as assignment6Meta } from './Assignment6'
 
@@ -22,6 +23,12 @@ export const articles = [
     id: assignment3Meta.id,
     component: Assignment3,
     metadata: assignment3Meta
+  },
+
+  {
+    id: assignment4Meta.id,
+    component: Assignment4,
+    metadata: assignment4Meta
   },
 
   {

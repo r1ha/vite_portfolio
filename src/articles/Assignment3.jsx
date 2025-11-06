@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 export const metadata = {
   id: 3,
   title: "Breaking RSA with statistical analysis",
-  category: "Cryptography", 
+  category: "Statistics", 
   author: "Erwan Achat",
   studentId: "2244316",
   date: "2025",
