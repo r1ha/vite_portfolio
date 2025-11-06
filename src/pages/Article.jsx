@@ -26,7 +26,7 @@ export default function Article(){
         <div className="bg-white shadow-lg rounded-xl p-8 my-8 hover:shadow-xl transition-shadow">
           <div className="flex items-start justify-between mb-8">
             <Link to="/blog" className="text-sm text-neutral-600 hover:text-black transition-colors">
-              ← Back to Blog
+              Back to Blog
             </Link>
           </div>
           
@@ -34,7 +34,7 @@ export default function Article(){
           
           <div className="mt-12 pt-8 border-t border-gray-200">
             <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-black transition-colors">
-              ← Back to Blog
+              Back to Blog
             </Link>
           </div>
         </div>

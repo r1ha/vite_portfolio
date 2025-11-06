@@ -109,7 +109,7 @@ export default function Blog(){
                                         to={`/article/${article.id}`} 
                                         className="text-sm text-neutral-700 hover:text-neutral-900 font-medium transition-colors"
                                     >
-                                        Read more →
+                                        Read more
                                     </Link>
                                 </div>
                             </article>
