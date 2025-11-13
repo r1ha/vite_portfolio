@@ -48,13 +48,36 @@ function PascalTriangle() {
 }
 
 function FibonacciConnection() {
+  // Calculer la somme diagonale correcte pour chaque ligne
+  // F_{n+1} = sum of C(n-k, k) for k from 0 to floor(n/2)
+  const calculateDiagonalSum = (n) => {
+    let sum = 0;
+    for (let k = 0; k <= Math.floor(n / 2); k++) {
+      // C(n-k, k)
+      sum += binomial(n - k, k);
+    }
+    return sum;
+  };
+  
+  const binomial = (n, k) => {
+    if (k > n || k < 0) return 0;
+    if (k === 0 || k === n) return 1;
+    let result = 1;
+    for (let i = 0; i < k; i++) {
+      result *= (n - i);
+      result /= (i + 1);
+    }
+    return Math.round(result);
+  };
+
   const rows = [
     { n: 0, values: [1], fib: 1, color: 'bg-yellow-100 border-yellow-400' },
     { n: 1, values: [1, 1], fib: 1, color: 'bg-yellow-100 border-yellow-400' },
     { n: 2, values: [1, 2, 1], fib: 2, color: 'bg-orange-100 border-orange-400' },
     { n: 3, values: [1, 3, 3, 1], fib: 3, color: 'bg-red-100 border-red-400' },
     { n: 4, values: [1, 4, 6, 4, 1], fib: 5, color: 'bg-pink-100 border-pink-400' },
-    { n: 5, values: [1, 5, 10, 10, 5, 1], fib: 8, color: 'bg-purple-100 border-purple-400' }
+    { n: 5, values: [1, 5, 10, 10, 5, 1], fib: 8, color: 'bg-purple-100 border-purple-400' },
+    { n: 6, values: [1, 6, 15, 20, 15, 6, 1], fib: 13, color: 'bg-blue-100 border-blue-400' }
   ];
 
   return (
@@ -71,26 +94,24 @@ function FibonacciConnection() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, i) => (
-              <tr key={i} className={`border-b border-gray-200 ${row.color}`}>
-                <td className="p-2 font-semibold">{row.n}</td>
-                <td className="p-2 font-mono">[{row.values.join(', ')}]</td>
-                <td className="p-2 text-center font-semibold text-blue-700">
-                  {row.values.reduce((a, b, idx) => {
-                    if (row.n - idx >= 0 && idx <= Math.floor(row.n / 2)) {
-                      return a + b;
-                    }
-                    return a;
-                  }, 0)}
-                </td>
-                <td className="p-2 text-center font-bold text-green-700">{row.fib}</td>
-              </tr>
-            ))}
+            {rows.map((row, i) => {
+              const diagSum = calculateDiagonalSum(row.n);
+              return (
+                <tr key={i} className={`border-b border-gray-200 ${row.color}`}>
+                  <td className="p-2 font-semibold">{row.n}</td>
+                  <td className="p-2 font-mono">[{row.values.join(', ')}]</td>
+                  <td className="p-2 text-center font-semibold text-blue-700">
+                    {diagSum}
+                  </td>
+                  <td className="p-2 text-center font-bold text-green-700">{row.fib}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <p className="text-xs text-gray-500 mt-4">
-        The sum of diagonal entries in Pascal's triangle produces the Fibonacci sequence
+        The sum of diagonal entries in Pascal's triangle produces the Fibonacci sequence: F<sub>n+1</sub> = Σ C(n-k, k) for k = 0 to ⌊n/2⌋
       </p>
     </div>
   );
@@ -267,14 +288,8 @@ export default function Assignment8() {
         <h2 className="text-2xl font-semibold mt-12 mb-6">Mathematical synthesis</h2>
 
         <p className="mb-6">
-          The connection between our two assignments reveals a fundamental pattern in probability theory. Both rely on the same underlying process (Bernoulli trials), but Assignment 7 adds a layer of complexity through:
+          The connection between our two assignments reveals a fundamental pattern in probability theory. Both rely on the same underlying process (Bernoulli trials), but Assignment 7 adds a layer of complexity.
         </p>
-
-        <ol className="space-y-3 my-6 list-decimal list-inside">
-          <li><strong>Multiple trials per time step</strong> (m attackers per week)</li>
-          <li><strong>Transformed probability</strong> (from individual <InlineMath>{`p`}</InlineMath> to weekly <InlineMath>{`1-(1-p)^m`}</InlineMath>)</li>
-          <li><strong>Signed accumulation</strong> (±1 scoring instead of simple counting)</li>
-        </ol>
 
         <p className="mb-6">
           Despite these differences, the law of large numbers applies equally to both. The expected value in Assignment 7's score is:
