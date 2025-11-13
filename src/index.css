@@ -7,8 +7,8 @@
      the document root (html/body/#root). */
 @layer base {
     :root {
-        --site-bg: #ebeef2;
-        --site-bg-dark: #e7ece8;
+        --site-bg: #ecf0f6;
+        --site-bg-dark: #d8dce2;
         --site-text: #111827;
     }
 

@@ -4,6 +4,8 @@ import Assignment3, { metadata as assignment3Meta } from './Assignment3'
 import Assignment4, { metadata as assignment4Meta } from './Assignment4'
 import Assignment5, { metadata as assignment5Meta } from './Assignment5'
 import Assignment6, { metadata as assignment6Meta } from './Assignment6'
+import Assignment7, { metadata as assignment7Meta } from './Assignment7'
+import Assignment8, { metadata as assignment8Meta } from './Assignment8'
 
 // Central index of all articles
 export const articles = [
@@ -41,6 +43,18 @@ export const articles = [
     id: assignment6Meta.id,
     component: Assignment6,
     metadata: assignment6Meta
+  },
+
+  {
+    id: assignment7Meta.id,
+    component: Assignment7,
+    metadata: assignment7Meta
+  },
+
+  {
+    id: assignment8Meta.id,
+    component: Assignment8,
+    metadata: assignment8Meta
   }
 ]
 
